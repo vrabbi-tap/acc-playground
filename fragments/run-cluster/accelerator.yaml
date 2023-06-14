@@ -27,6 +27,7 @@ accelerator:
         - name: enableSCG
           defaultValue: false
           inputType: checkbox
+          dataType: boolean
           label: Include Spring Cloud Gateway Installation
         - name: enableScgPerNamespace
           defaultValue: false
@@ -34,12 +35,15 @@ accelerator:
             name: enableSCG
             value: true
           inputType: checkbox
+          dataType: boolean
           label: Create Spring Cloud Gateway Per Namespace
         - name: enableESO
           defaultValue: false
           inputType: checkbox
+          dataType: boolean
           label: Include External Secrets Operator
         - name: enableAppSSO
           defaultValue: false
           inputType: checkbox
+          dataType: boolean
           label: Include AppSSO Auth Server Config

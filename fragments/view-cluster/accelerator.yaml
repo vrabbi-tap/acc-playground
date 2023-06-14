@@ -48,3 +48,4 @@ accelerator:
           defaultValue: false
           inputType: checkbox
           label: Enable Guest Authentication
+          dataType: boolean

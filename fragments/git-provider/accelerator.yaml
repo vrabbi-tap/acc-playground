@@ -35,5 +35,6 @@ accelerator:
   - name: internalCA
     label: Trust Internal CA
     inputType: checkbox
+    dataType: boolean
     defaultValue: false
     

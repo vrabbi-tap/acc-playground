@@ -49,6 +49,7 @@ accelerator:
         - name: jenkinsIntegration
           label: Integrate With Jenkins
           inputType: checkbox
+          dataType: boolean
           defaultValue: false
         - name: sourceScanner
           label: Source Scanner
