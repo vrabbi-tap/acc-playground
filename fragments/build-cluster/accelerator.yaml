@@ -1,0 +1,80 @@
+accelerator:
+  options:
+  - name: buildClusterConfig
+    label: "Build Cluster Settings"
+    dataType: [BuildCluster]
+  types:
+    - name: BuildCluster
+      struct:
+        - name: clusterType
+          inputType: select
+          choices:
+            - value: tkgm
+              text: TKGm or TKG 2.x with a Management Cluster
+            - value: tkgs
+              text: TKGs or TKG 2.x with a supervisor
+            - value: eks
+              text: EKS
+            - value: tkgi
+              text: TKGi
+            - value: other
+              text: Other
+          required: true
+        - name: clusterName
+          dataType: string
+          label: Cluster Name
+          required: true
+        - name: supplyChain
+          label: Supply Chain
+          inputType: select
+          defaultValue: "basic"
+          choices:
+          - value: basic
+            text: Basic
+          - value: testing
+            text: Testing
+          - value: testing-scanning
+            text: Testing and Scanning
+        - name: deliveryMethod
+          inputType: select
+          choices:
+            - text: RegOps (Imgpkg)
+              value: regOps
+            - text: GitOps Direct Commit
+              value: commit
+            - text: GitOps PR Flow
+              value: prFlow
+          defaultValue: prFlow
+          label: Deliverable Methodology
+        - name: jenkinsIntegration
+          label: Integrate With Jenkins
+          inputType: checkbox
+          defaultValue: false
+        - name: sourceScanner
+          label: Source Scanner
+          choices:
+            - text: Grype (Default)
+              value: grype
+            - text: Trivy
+              value: trivy
+            - text: Prisma
+              value: prisma
+            - text: Aqua
+              value: aqua
+          defaultValue: grype
+        - name: imageScanner
+          label: Image Scanner
+          choices:
+            - text: Grype (Default)
+              value: grype
+            - text: Trivy
+              value: trivy
+            - text: Prisma
+              value: prisma
+            - text: Aqua
+              value: aqua
+            - text: Carbon Black
+              value: cbc
+            - text: Snyk
+              value: snyk
+          defaultValue: grype

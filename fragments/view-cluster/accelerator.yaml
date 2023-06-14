@@ -1,0 +1,50 @@
+accelerator:
+  options:
+  - name: viewClusterConfig
+    label: "View Cluster Settings"
+    dataType: [ViewCluster]
+  types:
+    - name: ViewCluster
+      struct:
+        - name: clusterType
+          inputType: select
+          choices:
+            - value: tkgm
+              text: TKGm or TKG 2.x with a Management Cluster
+            - value: tkgs
+              text: TKGs or TKG 2.x with a supervisor
+            - value: eks
+              text: EKS
+            - value: tkgi
+              text: TKGi
+            - value: other
+              text: Other
+          required: true
+        - name: clusterName
+          dataType: string
+          label: Cluster Name
+          required: true
+        - name: authProvider
+          inputType: select
+          choices:
+            - text: "Azure AD"
+              value: azureAD
+            - text: "Okta"
+              value: okta
+            - text: "AD (With Dex)"
+              value: adWithDex
+            - text: "Github"
+              value: github
+            - text: "Gitlab"
+              value: gitlab
+            - text: "Workspace One (vIDM)"
+              value: vidm
+            - text: "None"
+              value: none
+          defaultValue: none
+          label: External IDP for TAP GUI
+          required: true
+        - name: guestAuth
+          defaultValue: false
+          inputType: checkbox
+          label: Enable Guest Authentication

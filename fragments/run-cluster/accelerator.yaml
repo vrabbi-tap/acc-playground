@@ -1,0 +1,45 @@
+accelerator:
+  options:
+  - name: runClusterConfig
+    label: "Run Cluster Settings"
+    dataType: [RunCluster]
+  types:
+    - name: RunCluster
+      struct:
+        - name: clusterType
+          inputType: select
+          choices:
+            - value: tkgm
+              text: TKGm or TKG 2.x with a Management Cluster
+            - value: tkgs
+              text: TKGs or TKG 2.x with a supervisor
+            - value: eks
+              text: EKS
+            - value: tkgi
+              text: TKGi
+            - value: other
+              text: Other
+          required: true
+        - name: clusterName
+          dataType: string
+          label: Cluster Name
+          required: true
+        - name: enableSCG
+          defaultValue: false
+          inputType: checkbox
+          label: Include Spring Cloud Gateway Installation
+        - name: enableScgPerNamespace
+          defaultValue: false
+          dependsOn: 
+            name: enableSCG
+            value: true
+          inputType: checkbox
+          label: Create Spring Cloud Gateway Per Namespace
+        - name: enableESO
+          defaultValue: false
+          inputType: checkbox
+          label: Include External Secrets Operator
+        - name: enableAppSSO
+          defaultValue: false
+          inputType: checkbox
+          label: Include AppSSO Auth Server Config

@@ -1,0 +1,15 @@
+accelerator:
+  displayName: TAP Project Repo Configuration
+  description: An Accelerator to produce a Git repo with all config needed for a TAP project
+  iconUrl: https://mappslearning.files.wordpress.com/2021/09/tanzulogo.png
+  tags:
+  - terasky
+  - tap
+  - tanzu
+  imports:
+  - name: full-cluster
+  - name: view-cluster
+  - name: iterate-cluster
+  - name: build-cluster
+  - name: run-cluster
+  - name: git-provider

@@ -1,0 +1,39 @@
+accelerator:
+  options:
+  - name: gitType
+    dataType: string
+    inputType: select
+    choices:
+      - text: "Github (SaaS)"
+        value: githubSaas
+      - text: "Github (Self Hosted)"
+        value: githubSelfHosted
+      - text: "Gitlab (SaaS)"
+        value: gitlabSaas
+      - text: "Gitlab (Self Hosted)"
+        value: gitlabSelfHosted
+      - text: "Azure DevOps (SaaS)"
+        value: azureDevOpsSaas
+      - text: "Azure DevOps (Self Hosted)"
+        value: azureDevOpsSelfHosted
+      - text: "BitBucket (SaaS)"
+        value: bitBucketSaas
+      - text: "BitBucket (Self Hosted)"
+        value: bitBucketSelfHosted
+    defaultValue: githubSaas
+    required: true
+  - name: gitAuthType
+    inputType: select
+    choices:
+      - text: "SSH Authentication"
+        value: sshGitAuth
+      - text: "Token Auth (Recommended)"
+        value: tokenGitAuth
+    defaultValue: tokenGitAuth
+    label: "Git Authentication Type"
+    required: true
+  - name: internalCA
+    label: Trust Internal CA
+    inputType: checkbox
+    defaultValue: false
+    
