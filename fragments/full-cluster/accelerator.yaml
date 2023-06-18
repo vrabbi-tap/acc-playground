@@ -8,22 +8,27 @@ accelerator:
       struct:
       - name: techdocsOverlay
         inputType: checkbox
+        dataType: boolean
         defaultValue: true
         label: Techdocs Auto Rendering
       - name: multiRegistryOverlay
         inputType: checkbox
+        dataType: boolean
         defaultValue: false
         label: Multi Registry Support
       - name: gitopsPrivateCaOverlay
         inputType: checkbox
+        dataType: boolean
         defaultValue: true
         label: GitOps Private CA Trust
       - name: sourceCommitTracabilityOverlay
         inputType: checkbox
+        dataType: boolean
         defaultValue: true
         label: Source Commit Annotations
       - name: tbsCommitTagOverlay
         inputType: checkbox
+        dataType: boolean
         defaultValue: true
         label: TBS Source Commit Tag Addition
     - name: FullCluster
