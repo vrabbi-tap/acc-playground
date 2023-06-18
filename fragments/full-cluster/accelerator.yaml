@@ -251,13 +251,13 @@ engine:
         options:
           oldKeyPath: '"$.tapGui.auth.provider"'
           value: "#fullClusterConfig['authProvider']"
-      - type: OpenRewriteRecipe
-        recipe: org.openrewrite.yaml.ChangeValue
-        options:
-          oldKeyPath: '"$.security.sourceScanner"'
-          value: "#fullClusterConfig['sourceScanner']"
-      - type: OpenRewriteRecipe
-        recipe: org.openrewrite.yaml.ChangeValue
-        options:
-          oldKeyPath: '"$.security.imageScanner"'
-          value: "#fullClusterConfig['imageScanner']"
+      #- type: OpenRewriteRecipe
+      #  recipe: org.openrewrite.yaml.ChangeValue
+      #  options:
+      #    oldKeyPath: '"$.security.sourceScanner"'
+      #    value: "#fullClusterConfig['sourceScanner']"
+      #- type: OpenRewriteRecipe
+      #  recipe: org.openrewrite.yaml.ChangeValue
+      #  options:
+      #    oldKeyPath: '"$.security.imageScanner"'
+      #    value: "#fullClusterConfig['imageScanner']"
