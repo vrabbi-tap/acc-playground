@@ -18,6 +18,10 @@ buildservice:
   password: 
 vmwareAccountNumber: 
 security:
+  cosign: 
+    privateKey: 
+    publicKey: 
+    password: 
   sourceScanner: grype
   imageScanner: grype
   signImages: 

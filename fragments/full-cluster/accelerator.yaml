@@ -86,6 +86,11 @@ accelerator:
           inputType: checkbox
           dataType: boolean
           label: Create Spring Cloud Gateway Per Namespace
+        - name: enableACS
+          defaultValue: false
+          inputType: checkbox
+          dataType: boolean
+          label: Include Application Configuration Service Installation (Spring Cloud Config Server)
         - name: enableESO
           defaultValue: false
           inputType: checkbox
@@ -120,6 +125,11 @@ accelerator:
             - text: Snyk
               value: snyk
           defaultValue: grype
+        - name: enableCosign
+          inputType: checkbox
+          dataType: boolean
+          label: Enable Image Signing With Cosign
+          defaultValue: true
         - name: authProvider
           inputType: select
           choices:
@@ -146,13 +156,12 @@ accelerator:
         - name: customOverlays
           dataType: Overlays
           label: Custom Overlays
-            
 
 engine:
   chain:
   - merge:
     - include: [ "**/*" ]
-      exclude: ["cluster-template.yaml", "values.yaml", "scanner/*", "overlays/*"]
+      exclude: ["cluster-template.yaml", "values.yaml", "scanner/*", "overlays/*", "additions/*"]
     - include: ["cluster-template.yaml"]
       chain:
       - type: OpenRewriteRecipe
@@ -196,7 +205,7 @@ engine:
       condition: "#fullClusterConfig['sourceScanner'] == 'prisma'" 
     - include: ["scanner/trivy-pkgr.yaml"]
       condition: "#fullClusterConfig['sourceScanner'] == 'trivy'" 
-    - include: ["scanner/prisma-creds.yaml","prisma-pkgr.yaml"]
+    - include: ["scanner/prisma-creds.yaml","scanner/prisma-pkgr.yaml"]
       condition: "#fullClusterConfig['imageScanner'] == 'prisma'"
     - include: ["scanner/trivy-pkgr.yaml"]
       condition: "#fullClusterConfig['imageScanner'] == 'trivy'" 
@@ -218,6 +227,14 @@ engine:
       condition: "#fullClusterConfig['customOverlays']['sourceCommitTracabilityOverlay']"
     - include: ["overlays/tbs-source-commit-tag-addition-overlay.yaml"]
       condition: "#fullClusterConfig['customOverlays']['tbsCommitTagOverlay']"
+    - include: ["additions/cosign-setup.yaml"]
+      condition: "#fullClusterConfig['enableCosign']"
+    - include: ["additions/eso-pkgi.yaml"]
+      condition: "#fullClusterConfig['enableESO']"
+    - include: ["additions/scg-pkgi.yaml"]
+      condition: "#fullClusterConfig['enableSCG']"
+    - include: ["additions/acs-pkgi.yaml"]
+      condition: "#fullClusterConfig['enableACS']"
     - include: ["values.yaml"]
       chain:
       - type: OpenRewriteRecipe

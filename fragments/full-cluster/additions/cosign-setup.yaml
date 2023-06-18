@@ -1,0 +1,20 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: cosign-key-pair
+  namespace: tap-install
+stringData:
+  cosign.key: #@ data.values.security.cosign.privateKey
+  cosign.password: #@ data.values.security.cosign.password
+  cosign.pub: #@ data.values.security.cosign.publicKey
+---
+apiVersion: secretgen.carvel.dev/v1alpha1
+kind: SecretExport
+metadata:
+  name: cosign-key-pair
+  namespace: tap-install
+spec:
+  toNamespace: '*'
