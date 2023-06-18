@@ -13,3 +13,9 @@ accelerator:
   - name: build-cluster
   - name: run-cluster
   - name: git-provider
+  engine:
+   merge:
+   - type: InvokeFragment
+     reference: full-cluster
+   - type: InvokeFragment
+     reference: git-provider
