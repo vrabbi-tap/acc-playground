@@ -261,3 +261,4 @@ engine:
       condition: "#fullClusterConfig['customOverlays']['sourceCommitTracabilityOverlay']"
     - include: ["overlays/tbs-source-commit-tag-addition-overlay.yaml"]
       condition: "#fullClusterConfig['customOverlays']['tbsCommitTagOverlay']"
+    - include: ["values.yaml"]
