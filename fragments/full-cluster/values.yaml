@@ -18,8 +18,8 @@ buildservice:
   password: 
 vmwareAccountNumber: 
 security:
-  sourceScanner: 
-  imageScanner: 
+  sourceScanner: grype
+  imageScanner: grype
   signImages: 
   validateSignatures: 
   snyk: 
@@ -44,18 +44,18 @@ tapGui:
     github: 
       clientId: 
       clientSecret: 
-      #! enterpriseInstanceUrl: 
+      enterpriseInstanceUrl: ""
     okta: 
       clientId: 
       clientSecret: 
       audience: 
-      #! authServerId: 
-      #! idp: 
+      authServerId: ""
+      idp: ""
     gitlab: 
       clientId: 
       clientSecret: 
-      #! audience: 
-      #! callbackUrl: 
+      audience: ""
+      callbackUrl: "" 
     azureAD:
       clientId: 
       clientSecret: 
