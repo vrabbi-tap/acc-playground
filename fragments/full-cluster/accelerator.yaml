@@ -120,53 +120,53 @@ accelerator:
           inputType: checkbox
           label: Enable Guest Authentication
           dataType: boolean
-  engine:
-    chain:
-    - merge:
-      - include: [ "**/*" ]
-        exclude: ["cluster-template.yaml", "values.yaml"]
-      - include: ["values.yaml"]
+engine:
+  chain:
+  - merge:
+    - include: [ "**/*" ]
+      exclude: ["cluster-template.yaml", "values.yaml"]
+    - include: ["values.yaml"]
+      chain:
+      - include: [ "config/workload.yaml" ]
         chain:
-        - include: [ "config/workload.yaml" ]
-          chain:
-          - type: OpenRewriteRecipe
-            condition: "#authProvider != 'github'"
-            recipe: org.openrewrite.yaml.DeleteKey
-            options:
-              keyPath: '"$.tapGui.auth.github"'
-          - type: OpenRewriteRecipe
-            condition: "#authProvider != 'okta'"
-            recipe: org.openrewrite.yaml.DeleteKey
-            options:
-              keyPath: '"$.tapGui.auth.okta"'
-          - type: OpenRewriteRecipe
-            condition: "#authProvider != 'gitlab'"
-            recipe: org.openrewrite.yaml.DeleteKey
-            options:
-              keyPath: '"$.tapGui.auth.gitlab"'
-          - type: OpenRewriteRecipe
-            condition: "#authProvider != 'azureAD'"
-            recipe: org.openrewrite.yaml.DeleteKey
-            options:
-              keyPath: '"$.tapGui.auth.azureAD"'
-          - type: OpenRewriteRecipe
-            condition: "#authProvider != 'google'"
-            recipe: org.openrewrite.yaml.DeleteKey
-            options:
-              keyPath: '"$.tapGui.auth.google"'
-              
-      - include: ["cluster-template.yaml"]
-        chain:
-        - type: ReplaceText
-          substitutions:
-          - text: SUPPLY_CHAIN_OF_CHOICE
-            with: "#supplyChain"
-          - text: CUSTOMER_NAME
-            with: "#artifactId"
-        - type: ReplaceText
-          condition: "#deliveryMethod != 'regOps'"
-          substitutions:
-          - text: COMMIT_STRATEGY
-            with: "#deliveryMethod"
-          #- text: GIT_KIND
-          #  with: "#gitType"
+        - type: OpenRewriteRecipe
+          condition: "#authProvider != 'github'"
+          recipe: org.openrewrite.yaml.DeleteKey
+          options:
+            keyPath: '"$.tapGui.auth.github"'
+        - type: OpenRewriteRecipe
+          condition: "#authProvider != 'okta'"
+          recipe: org.openrewrite.yaml.DeleteKey
+          options:
+            keyPath: '"$.tapGui.auth.okta"'
+        - type: OpenRewriteRecipe
+          condition: "#authProvider != 'gitlab'"
+          recipe: org.openrewrite.yaml.DeleteKey
+          options:
+            keyPath: '"$.tapGui.auth.gitlab"'
+        - type: OpenRewriteRecipe
+          condition: "#authProvider != 'azureAD'"
+          recipe: org.openrewrite.yaml.DeleteKey
+          options:
+            keyPath: '"$.tapGui.auth.azureAD"'
+        - type: OpenRewriteRecipe
+          condition: "#authProvider != 'google'"
+          recipe: org.openrewrite.yaml.DeleteKey
+          options:
+            keyPath: '"$.tapGui.auth.google"'
+            
+    - include: ["cluster-template.yaml"]
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: SUPPLY_CHAIN_OF_CHOICE
+          with: "#supplyChain"
+        - text: CUSTOMER_NAME
+          with: "#artifactId"
+      - type: ReplaceText
+        condition: "#deliveryMethod != 'regOps'"
+        substitutions:
+        - text: COMMIT_STRATEGY
+          with: "#deliveryMethod"
+        #- text: GIT_KIND
+        #  with: "#gitType"
