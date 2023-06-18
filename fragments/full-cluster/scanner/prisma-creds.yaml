@@ -1,0 +1,18 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: prisma-creds
+  namespace: tap-install
+stringData:
+  username: #@ data.values.security.prisma.username
+  password: #@ data.values.security.prisma.password
+---
+apiVersion: secretgen.carvel.dev/v1alpha1
+kind: SecretExport
+metadata:
+  name: prisma-creds
+  namespace: tap-install
+spec:
+  toNamespace: '*'

@@ -1,0 +1,17 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: snyk-creds
+  namespace: tap-install
+data:
+  snyk_token: #@ data.values.security.snyk.token
+---
+apiVersion: secretgen.carvel.dev/v1alpha1
+kind: SecretExport
+metadata:
+  name: snyk-creds
+  namespace: tap-install
+spec:
+  toNamespace: '*'

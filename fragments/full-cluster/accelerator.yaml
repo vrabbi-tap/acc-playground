@@ -4,6 +4,28 @@ accelerator:
     label: "Full Cluster Settings"
     dataType: FullCluster
   types:
+    - name: Overlays
+      struct:
+      - name: techdocsOverlay
+        inputType: checkbox
+        defaultValue: true
+        label: Techdocs Auto Rendering
+      - name: multiRegistryOverlay
+        inputType: checkbox
+        defaultValue: false
+        label: Multi Registry Support
+      - name: gitopsPrivateCaOverlay
+        inputType: checkbox
+        defaultValue: true
+        label: GitOps Private CA Trust
+      - name: sourceCommitTracabilityOverlay
+        inputType: checkbox
+        defaultValue: true
+        label: Source Commit Annotations
+      - name: tbsCommitTagOverlay
+        inputType: checkbox
+        defaultValue: true
+        label: TBS Source Commit Tag Addition
     - name: FullCluster
       struct:
         - name: clusterType
@@ -33,7 +55,7 @@ accelerator:
             text: Basic
           - value: testing
             text: Testing
-          - value: testingScanning
+          - value: testing_scanning
             text: Testing and Scanning
         - name: deliveryMethod
           inputType: select
@@ -78,8 +100,6 @@ accelerator:
               value: trivy
             - text: Prisma
               value: prisma
-            - text: Aqua
-              value: aqua
           defaultValue: grype
         - name: imageScanner
           label: Image Scanner
@@ -90,8 +110,6 @@ accelerator:
               value: trivy
             - text: Prisma
               value: prisma
-            - text: Aqua
-              value: aqua
             - text: Carbon Black
               value: cbc
             - text: Snyk
@@ -120,11 +138,16 @@ accelerator:
           inputType: checkbox
           label: Enable Guest Authentication
           dataType: boolean
+        - name: customOverlays
+          dataType: Overlays
+          label: Custom Overlays
+            
+
 engine:
   chain:
   - merge:
     - include: [ "**/*" ]
-      exclude: ["cluster-template.yaml", "values.yaml"]
+      exclude: ["cluster-template.yaml", "values.yaml", "scanner/*"]
     - include: ["values.yaml"]
       chain:
         - type: OpenRewriteRecipe
@@ -168,19 +191,68 @@ engine:
           options:
             oldKeyPath: '"$.security.imageScanner"'
             value: "#fullClusterConfig['imageScanner']"
-
     - include: ["cluster-template.yaml"]
       chain:
-      - type: ReplaceText
-        substitutions:
-        - text: SUPPLY_CHAIN_OF_CHOICE
-          with: "#fullClusterConfig['supplyChain']"
-        - text: CUSTOMER_NAME
-          with: "#artifactId"
-      - type: ReplaceText
+      - type: OpenRewriteRecipe
+        recipe: org.openrewrite.yaml.ChangeValue
+        options:
+          oldKeyPath: '"$.tap_gui.app_config.organization.name"'
+          value: "#artifactId"
+      - type: OpenRewriteRecipe
+        recipe: org.openrewrite.yaml.ChangeValue
+        options:
+          oldKeyPath: '"$.tap_gui.app_config.customize.custom_name"'
+          value: "#artifactId + ' Developer Portal'"
+      - type: OpenRewriteRecipe
+        recipe: org.openrewrite.yaml.ChangeValue
+        options:
+          oldKeyPath: '"$.tap_gui.app_config.app.title"'
+          value: "#artifactId + ' Developer Portal'"
+      - type: OpenRewriteRecipe
+        recipe: org.openrewrite.yaml.ChangeKey
+        options:
+          oldKeyPath: '"$.ootb_supply_chain_basic"'
+          newKey: "'ootb_supply_chain_' + #fullClusterConfig['supplyChain']"
+      - type: OpenRewriteRecipe
+        recipe: org.openrewrite.yaml.ChangeValue
+        options:
+          oldKeyPath: '"$.supply_chain"'
+          value: "#fullClusterConfig['supplyChain']"
+      - type: OpenRewriteRecipe
+        recipe: org.openrewrite.yaml.ChangeValue
         condition: "#fullClusterConfig['deliveryMethod'] != 'regOps'"
-        substitutions:
-        - text: COMMIT_STRATEGY
-          with: "#fullClusterConfig['deliveryMethod']"
-        - text: GIT_KIND
-          with: "#gitType"
+        options:
+          oldKeyPath: '"$.ootb_supply_chain_basic.gitops.pull_request.server_kind"'
+          value: "#gitType"
+      - type: OpenRewriteRecipe
+        recipe: org.openrewrite.yaml.ChangeValue
+        condition: "#fullClusterConfig['deliveryMethod'] != 'regOps'"
+        options:
+          oldKeyPath: '"$.supply_chain"'
+          value: "#fullClusterConfig['supplyChain']"
+    - include: ["scanner/prisma-creds.yaml","scanner/prisma-pkgr.yaml"]
+      condition: "#fullClusterConfig['sourceScanner'] == 'prisma'" 
+    - include: ["scanner/trivy-pkgr.yaml"]
+      condition: "#fullClusterConfig['sourceScanner'] == 'trivy'" 
+    - include: ["scanner/prisma-creds.yaml","prisma-pkgr.yaml"]
+      condition: "#fullClusterConfig['imageScanner'] == 'prisma'"
+    - include: ["scanner/trivy-pkgr.yaml"]
+      condition: "#fullClusterConfig['imageScanner'] == 'trivy'" 
+    - include: ["scanner/snyk-creds.yaml"]
+      condition: "#fullClusterConfig['imageScanner'] == 'snyk'"
+    - include: ["scanner/cbc-creds.yaml"]
+      condition: "#fullClusterConfig['imageScanner'] == 'cbc'"
+    - include: ["overlays/contour-ipv4-overlay.yaml"]
+      condition: "#fullClusterConfig['clusterType'] == 'tkgi'"
+    - include: ["overlays/tkgi-prisma-remove-labels-overlay.yaml"]
+      condition: "#fullClusterConfig['clusterType'] == 'tkgi' and #fullClusterConfig['sourceScanner'] == 'prisma'"
+    - include: ["overlays/techdocs-overlay.yaml"]
+      condition: "#fullClusterConfig['customOverlays']['techdocsOverlay']"
+    - include: ["overlays/multi-registry-overlays.yaml"]
+      condition: "#fullClusterConfig['customOverlays']['multiRegistryOverlay']"
+    - include: ["overlays/gitops-private-ca-overlay.yaml"]
+      condition: "#fullClusterConfig['customOverlays']['gitopsPrivateCaOverlay']"
+    - include: ["overlays/source-details-annotations-overlays.yaml"]
+      condition: "#fullClusterConfig['customOverlays']['sourceCommitTracabilityOverlay']"
+    - include: ["overlays/tbs-source-commit-tag-addition-overlay.yaml"]
+      condition: "#fullClusterConfig['customOverlays']['tbsCommitTagOverlay']"

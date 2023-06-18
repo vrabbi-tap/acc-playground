@@ -1,0 +1,19 @@
+#@ load("@ytt:data", "data")
+---
+kind: Secret
+metadata:
+  name: carbon-black-creds
+  namespace: tap-install
+stringData:
+  cbc_api_id: #@ data.values.security.cbc.apiId
+  cbc_api_key: #@ data.values.security.cbc.apiKey
+  cbc_org_key: #@ data.values.security.cbc.orgKey
+  cbc_saas_url: #@ data.values.security.cbc.saasUrl
+---
+apiVersion: secretgen.carvel.dev/v1alpha1
+kind: SecretExport
+metadata:
+  name: carbon-black-creds
+  namespace: tap-install
+spec:
+  toNamespace: '*'

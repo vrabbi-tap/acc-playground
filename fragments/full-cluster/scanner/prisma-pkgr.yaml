@@ -1,0 +1,10 @@
+#@ load("@ytt:data", "data")
+---
+kind: PackageRepository
+metadata:
+  name: prisma-scanner-repository
+  namespace: tap-install
+spec:
+  fetch:
+    imgpkgBundle:
+      image: #@ "{}/{}/prisma-repo-scanning-bundle:{}".format(data.values.registryFqdn,data.values.registryProject,data.values.imageTags.prismaRepo)

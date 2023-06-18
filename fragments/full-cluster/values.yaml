@@ -6,6 +6,8 @@ imageTags:
   techdocs: "v1.1.2"
   dind: "dind-rootless"
   tbsDeps: "1.10.10"
+  prismaRepo: "0.1.5-alpha.15"
+  trivyRepo: "0.1.5-alpha.3"
 tapVersion: "1.5.2"
 ingressDomain: 
 internalCA: 
@@ -20,6 +22,16 @@ security:
   imageScanner: 
   signImages: 
   validateSignatures: 
+  snyk: 
+    token: 
+  cbc: 
+    appId: 
+    apiKey: 
+    orgKey: 
+    saasUrl: 
+  prisma: 
+    username: 
+    password: 
 git: 
   serverUrl: 
   org: 
