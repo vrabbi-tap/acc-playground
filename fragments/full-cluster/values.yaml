@@ -1,4 +1,4 @@
-clusterName: CLUSTER_NAME
+clusterName: 
 imageTags:
   postgresExporter: "0.11.1-debian-11-r60"
   postgresql: "15.2.0-debian-11-r2"
@@ -15,6 +15,11 @@ buildservice:
   username: 
   password: 
 vmwareAccountNumber: 
+security:
+  sourceScanner: 
+  imageScanner: 
+  signImages: 
+  validateSignatures: 
 git: 
   serverUrl: 
   org: 

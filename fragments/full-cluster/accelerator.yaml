@@ -151,7 +151,24 @@ engine:
           condition: "#fullClusterConfig['authProvider'] != 'google'"
           recipe: org.openrewrite.yaml.DeleteKey
           options:
-            keyPath: '"$.tapGui.auth.google"'        
+            keyPath: '"$.tapGui.auth.google"'  
+        - type: OpenRewriteRecipe
+          condition: "#fullClusterConfig['authProvider'] != 'none'"
+          recipe: org.openrewrite.yaml.ChangeValue
+          options:
+            oldKeyPath: '"$.tapGui.auth.provider"'
+            value: "#fullClusterConfig['authProvider']"
+        - type: OpenRewriteRecipe
+          recipe: org.openrewrite.yaml.ChangeValue
+          options:
+            oldKeyPath: '"$.security.sourceScanner"'
+            value: "#fullClusterConfig['sourceScanner']"
+        - type: OpenRewriteRecipe
+          recipe: org.openrewrite.yaml.ChangeValue
+          options:
+            oldKeyPath: '"$.security.imageScanner"'
+            value: "#fullClusterConfig['imageScanner']"
+
     - include: ["cluster-template.yaml"]
       chain:
       - type: ReplaceText
@@ -165,5 +182,5 @@ engine:
         substitutions:
         - text: COMMIT_STRATEGY
           with: "#fullClusterConfig['deliveryMethod']"
-        #- text: GIT_KIND
-        #  with: "#gitType"
+        - text: GIT_KIND
+          with: "#gitType"
