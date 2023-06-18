@@ -2,7 +2,7 @@ accelerator:
   options:
   - name: fullClusterConfig
     label: "Full Cluster Settings"
-    dataType: [FullCluster]
+    dataType: FullCluster
   types:
     - name: FullCluster
       struct:
