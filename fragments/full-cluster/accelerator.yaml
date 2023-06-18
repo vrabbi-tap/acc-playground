@@ -127,8 +127,6 @@ engine:
       exclude: ["cluster-template.yaml", "values.yaml"]
     - include: ["values.yaml"]
       chain:
-      - include: [ "config/workload.yaml" ]
-        chain:
         - type: OpenRewriteRecipe
           condition: "#fullClusterConfig['authProvider'] != 'github'"
           recipe: org.openrewrite.yaml.DeleteKey
@@ -153,8 +151,7 @@ engine:
           condition: "#fullClusterConfig['authProvider'] != 'google'"
           recipe: org.openrewrite.yaml.DeleteKey
           options:
-            keyPath: '"$.tapGui.auth.google"'
-            
+            keyPath: '"$.tapGui.auth.google"'        
     - include: ["cluster-template.yaml"]
       chain:
       - type: ReplaceText
