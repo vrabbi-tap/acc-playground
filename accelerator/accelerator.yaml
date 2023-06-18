@@ -8,14 +8,15 @@ accelerator:
   - tanzu
   imports:
   - name: full-cluster
-  - name: view-cluster
-  - name: iterate-cluster
-  - name: build-cluster
-  - name: run-cluster
+  #- name: view-cluster
+  #- name: iterate-cluster
+  #- name: build-cluster
+  #- name: run-cluster
   - name: git-provider
   engine:
-   merge:
-   - type: InvokeFragment
-     reference: full-cluster
-   - type: InvokeFragment
-     reference: git-provider
+    chain:
+    - type: InvokeFragment
+      reference: full-cluster
+    - type: InvokeFragment
+      reference: git-provider
+      
