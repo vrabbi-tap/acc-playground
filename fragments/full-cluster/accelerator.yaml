@@ -168,5 +168,5 @@ accelerator:
           substitutions:
           - text: COMMIT_STRATEGY
             with: "#deliveryMethod"
-          - text: GIT_KIND
-            with: "#gitType"
+          #- text: GIT_KIND
+          #  with: "#gitType"
