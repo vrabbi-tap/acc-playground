@@ -130,27 +130,27 @@ engine:
       - include: [ "config/workload.yaml" ]
         chain:
         - type: OpenRewriteRecipe
-          condition: "#FullCluster['authProvider'] != 'github'"
+          condition: "#fullClusterConfig['authProvider'] != 'github'"
           recipe: org.openrewrite.yaml.DeleteKey
           options:
             keyPath: '"$.tapGui.auth.github"'
         - type: OpenRewriteRecipe
-          condition: "#FullCluster['authProvider'] != 'okta'"
+          condition: "#fullClusterConfig['authProvider'] != 'okta'"
           recipe: org.openrewrite.yaml.DeleteKey
           options:
             keyPath: '"$.tapGui.auth.okta"'
         - type: OpenRewriteRecipe
-          condition: "#FullCluster['authProvider'] != 'gitlab'"
+          condition: "#fullClusterConfig['authProvider'] != 'gitlab'"
           recipe: org.openrewrite.yaml.DeleteKey
           options:
             keyPath: '"$.tapGui.auth.gitlab"'
         - type: OpenRewriteRecipe
-          condition: "#FullCluster['authProvider'] != 'azureAD'"
+          condition: "#fullClusterConfig['authProvider'] != 'azureAD'"
           recipe: org.openrewrite.yaml.DeleteKey
           options:
             keyPath: '"$.tapGui.auth.azureAD"'
         - type: OpenRewriteRecipe
-          condition: "#FullCluster['authProvider'] != 'google'"
+          condition: "#fullClusterConfig['authProvider'] != 'google'"
           recipe: org.openrewrite.yaml.DeleteKey
           options:
             keyPath: '"$.tapGui.auth.google"'
@@ -160,13 +160,13 @@ engine:
       - type: ReplaceText
         substitutions:
         - text: SUPPLY_CHAIN_OF_CHOICE
-          with: "#FullCluster['supplyChain']"
+          with: "#fullClusterConfig['supplyChain']"
         - text: CUSTOMER_NAME
           with: "#artifactId"
       - type: ReplaceText
-        condition: "#FullCluster['deliveryMethod'] != 'regOps'"
+        condition: "#fullClusterConfig['deliveryMethod'] != 'regOps'"
         substitutions:
         - text: COMMIT_STRATEGY
-          with: "#FullCluster['deliveryMethod']"
+          with: "#fullClusterConfig['deliveryMethod']"
         #- text: GIT_KIND
         #  with: "#gitType"
