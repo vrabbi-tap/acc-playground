@@ -1,0 +1,48 @@
+clusterName: CLUSTER_NAME
+imageTags:
+  postgresExporter: "0.11.1-debian-11-r60"
+  postgresql: "15.2.0-debian-11-r2"
+  bitnamiShell: "11-debian-11-r86"
+  techdocs: "v1.1.2"
+  dind: "dind-rootless"
+  tbsDeps: "1.10.10"
+tapVersion: "1.5.2"
+ingressDomain: 
+internalCA: 
+registryFqdn: 
+registryProject: tap
+buildservice:
+  username: 
+  password: 
+vmwareAccountNumber: 
+git: 
+  serverUrl: 
+  org: 
+  gitopsRepoName: tap-gitops
+  gitOpsDefaultBranch: main
+tapGui:
+  psqlPassword: 
+  auth:
+    provider: none
+    github: 
+      clientId: 
+      clientSecret: 
+      #! enterpriseInstanceUrl: 
+    okta: 
+      clientId: 
+      clientSecret: 
+      audience: 
+      #! authServerId: 
+      #! idp: 
+    gitlab: 
+      clientId: 
+      clientSecret: 
+      #! audience: 
+      #! callbackUrl: 
+    azureAD:
+      clientId: 
+      clientSecret: 
+      tenantId: 
+    google: 
+      clientId: 
+      clientSecret: 

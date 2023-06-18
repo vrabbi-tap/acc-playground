@@ -1,0 +1,23 @@
+auth:
+  postgresPassword: #@ data.values.tapGui.psqlPassword
+architecture: replication
+replication:
+  synchronousCommit: remote_apply
+  numSynchronousReplicas: 1
+readReplicas:
+  replicaCount: 1
+  
+image:
+  registry: #@ data.values.registryFqdn
+  repository: #@ "{}/postgresql".format(data.values.registryProject)
+  tag: #@ data.values.imageTags.postgresql
+volumePermissions:
+  image:
+    registry: #@ data.values.registryFqdn
+    repository: #@ "{}/bitnami-shell".format(data.values.registryProject)
+    tag: #@ data.values.imageTags.bitnamiShell
+metrics:
+  image:
+    registry: #@ data.values.registryFqdn
+    repository: #@ "{}/postgres-exporter".format(data.values.registryProject)
+    tag: #@ data.values.imageTags.postgresExporter

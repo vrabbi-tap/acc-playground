@@ -4,23 +4,14 @@ accelerator:
     dataType: string
     inputType: select
     choices:
-      - text: "Github (SaaS)"
-        value: githubSaas
-      - text: "Github (Self Hosted)"
-        value: githubSelfHosted
-      - text: "Gitlab (SaaS)"
-        value: gitlabSaas
-      - text: "Gitlab (Self Hosted)"
-        value: gitlabSelfHosted
-      - text: "Azure DevOps (SaaS)"
-        value: azureDevOpsSaas
-      - text: "Azure DevOps (Self Hosted)"
-        value: azureDevOpsSelfHosted
-      - text: "BitBucket (SaaS)"
-        value: bitBucketSaas
-      - text: "BitBucket (Self Hosted)"
-        value: bitBucketSelfHosted
-    defaultValue: githubSaas
+      - text: "Github"
+        value: github
+      - text: "Gitlab"
+        value: gitlab
+      - text: "Azure DevOps"
+        value: azure
+
+    defaultValue: github
     required: true
   - name: gitAuthType
     inputType: select

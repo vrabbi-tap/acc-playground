@@ -27,13 +27,13 @@ accelerator:
         - name: supplyChain
           label: Supply Chain
           inputType: select
-          defaultValue: "basic"
+          defaultValue: "testingScanning"
           choices:
           - value: basic
             text: Basic
           - value: testing
             text: Testing
-          - value: testing-scanning
+          - value: testingScanning
             text: Testing and Scanning
         - name: deliveryMethod
           inputType: select
