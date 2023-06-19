@@ -293,7 +293,7 @@ engine:
         options:
           oldKeyPath: '"$.security.imageScanner"'
           value: "#fullClusterConfig['imageScanner']"
-      
+    - include: ["readme-snippets/*"]
     - include: ["README.md"]
       chain:
       - type: ReplaceText
@@ -306,3 +306,4 @@ engine:
         substitutions:
         - text: "COSIGN_CONFIG_PLACEHOLDER"
           with: "''"
+    - exclude: ["readme-snippets/*"]
