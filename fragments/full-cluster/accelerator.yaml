@@ -305,4 +305,4 @@ engine:
         condition: "#fullClusterConfig['enableCosign'] == false"
         substitutions:
         - text: "COSIGN_CONFIG_PLACEHOLDER"
-          with: ""
+          with: "''"
