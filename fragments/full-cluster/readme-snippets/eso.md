@@ -1,1 +1,0 @@
-# Installing External Secrets Operator

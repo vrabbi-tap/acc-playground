@@ -309,25 +309,36 @@ engine:
         regex: 'readme-snippets/3-create-prereq-objects.md'
         rewriteTo: "'README.md'"
       - type: RewritePath
-        regex: 'readme-snippets/install-tap.md'
+        regex: 'readme-snippets/4-install-tap.md'
         rewriteTo: "'README.md'"
       - type: RewritePath
         condition: "#fullClusterConfig['imageScanner'] == 'snyk'"
-        regex: 'readme-snippets/snyk.md'
+        regex: 'readme-snippets/5-snyk.md'
         rewriteTo: "'README.md'"
       - type: RewritePath
         condition: "#fullClusterConfig['imageScanner'] == 'cbc'"
-        regex: 'readme-snippets/cbc.md'
+        regex: 'readme-snippets/5-cbc.md'
         rewriteTo: "'README.md'"
       - type: RewritePath
         condition: "#fullClusterConfig['sourceScanner'] == 'prisma' or #fullClusterConfig['imageScanner'] == 'prisma'"
-        regex: 'readme-snippets/prisma.md'
+        regex: 'readme-snippets/5-prisma.md'
         rewriteTo: "'README.md'"
       - type: RewritePath
         condition: "#fullClusterConfig['sourceScanner'] == 'trivy' or #fullClusterConfig['imageScanner'] == 'trivy'"
-        regex: 'readme-snippets/trivy.md'
+        regex: 'readme-snippets/5-trivy.md'
         rewriteTo: "'README.md'"
-      
+      - type: RewritePath
+        condition: "#fullClusterConfig['enableESO']"
+        regex: 'readme-snippets/6-eso.md'
+        rewriteTo: "'README.md'"
+      - type: RewritePath
+        condition: "#fullClusterConfig['enableSCG']"
+        regex: 'readme-snippets/7-scg.md'
+        rewriteTo: "'README.md'"
+      - type: RewritePath
+        condition: "#fullClusterConfig['enableACS']"
+        regex: 'readme-snippets/8-acs.md'
+        rewriteTo: "'README.md'"
       - type: UniquePath
         strategy: Append
       
