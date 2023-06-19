@@ -293,17 +293,10 @@ engine:
         options:
           oldKeyPath: '"$.security.imageScanner"'
           value: "#fullClusterConfig['imageScanner']"
-    - include: ["readme-snippets/*"]
-    - include: ["README.md"]
+    - include: ["**/*.md"]
       chain:
-      - type: ReplaceText
-        condition: "#fullClusterConfig['enableCosign']"
-        substitutions:
-        - text: "COSIGN_CONFIG_PLACEHOLDER"
-          with: "#files.contentsOf('readme-snippets/cosign.md')"
-      - type: ReplaceText
-        condition: "#fullClusterConfig['enableCosign'] == false"
-        substitutions:
-        - text: "COSIGN_CONFIG_PLACEHOLDER"
-          with: "''"
-    - exclude: ["readme-snippets/*"]
+      - type: RewritePath
+        regex: '**/*.md'
+        rewriteTo: "'README.md'"
+      - type: UniquePath
+        strategy: Append
