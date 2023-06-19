@@ -334,5 +334,5 @@ engine:
       chain:
       - type: RewritePath
         rewriteTo: "'README.md'"
-  - type: UniquePath
-    strategy: Append
+    - type: UniquePath
+      strategy: Append
