@@ -293,47 +293,16 @@ engine:
         options:
           oldKeyPath: '"$.security.imageScanner"'
           value: "#fullClusterConfig['imageScanner']"
-      - merge:
-        - include: ["README.md"]
-        - include: ["readme-snippets/cosign.md"]
-          condition: "#fullClusterConfig['enableCosign']"
-          chain:
-          - type: RewritePath
-            rewriteTo: "'README.md'"
-        - include: ["readme-snippets/eso.md"]
-          condition: "#fullClusterConfig['enableESO']"
-          chain:
-          - type: RewritePath
-            rewriteTo: "'README.md'"
-        - include: ["readme-snippets/scg.md"]
-          condition: "#fullClusterConfig['enableSCG']"
-          chain:
-          - type: RewritePath
-            rewriteTo: "'README.md'"
-        - include: ["readme-snippets/acs.md"]
-          condition: "#fullClusterConfig['enableACS']"
-          chain:
-          - type: RewritePath
-            rewriteTo: "'README.md'"
-        - include: ["readme-snippets/cbc.md"]
-          condition: "#fullClusterConfig['imageScanner'] == 'cbc'"
-          chain:
-          - type: RewritePath
-            rewriteTo: "'README.md'"
-        - include: ["readme-snippets/prisma.md"]
-          condition: "#fullClusterConfig['sourceScanner'] == 'prisma' or #fullClusterConfig['imageScanner'] == 'prisma'"
-          chain:
-          - type: RewritePath
-            rewriteTo: "'README.md'"
-        - include: ["readme-snippets/snyk.md"]
-          condition: "#fullClusterConfig['imageScanner'] == 'snyk'"
-          chain:
-          - type: RewritePath
-            rewriteTo: "'README.md'"
-        - include: ["readme-snippets/trivy.md"]
-          condition: "#fullClusterConfig['sourceScanner'] == 'trivy' or #fullClusterConfig['imageScanner'] == 'trivy'"
-          chain:
-          - type: RewritePath
-            rewriteTo: "'README.md'"
-      - type: UniquePath
-        strategy: Append
+      
+    - include: ["README.md"]
+      chain:
+      - type: ReplaceText
+        condition: "#fullClusterConfig['enableCosign']"
+        substitutions:
+        - text: "COSIGN_CONFIG_PLACEHOLDER"
+          with: "#files.contentsOf('readme-snippets/cosign.md')"
+      - type: ReplaceText
+        condition: "#fullClusterConfig['enableCosign'] == false"
+        substitutions:
+        - text: "COSIGN_CONFIG_PLACEHOLDER"
+          with: ""
