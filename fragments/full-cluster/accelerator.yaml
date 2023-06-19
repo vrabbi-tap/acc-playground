@@ -293,10 +293,16 @@ engine:
         options:
           oldKeyPath: '"$.security.imageScanner"'
           value: "#fullClusterConfig['imageScanner']"
-    - include: ["**/*.md"]
+    - include: ["README.md", "readme-snippets/*.md"]
       chain:
       - type: RewritePath
-        regex: '.*.md'
+        condition: "#fullClusterConfig['enableCosign']"
+        regex: 'readme-snippets/cosign.md'
+        rewriteTo: "'README.md'"
+      - type: RewritePath
+        condition: "#fullClusterConfig['enableSCG']"
+        regex: 'readme-snippets/scg.md'
         rewriteTo: "'README.md'"
       - type: UniquePath
         strategy: Append
+      
