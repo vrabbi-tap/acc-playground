@@ -297,16 +297,16 @@ engine:
       chain:
       - type: RewritePath
         condition: "#fullClusterConfig['enableCosign']"
-        regex: 'readme-snippets/cosign.md'
+        regex: 'readme-snippets/0-cosign.md'
         rewriteTo: "'README.md'"
       - type: RewritePath
-        regex: 'readme-snippets/generate-files.md'
+        regex: 'readme-snippets/1-generate-files.md'
         rewriteTo: "'README.md'"
       - type: RewritePath
-        regex: 'readme-snippets/relocate-images.md'
+        regex: 'readme-snippets/2-relocate-images.md'
         rewriteTo: "'README.md'"
       - type: RewritePath
-        regex: 'readme-snippets/create-prereq-objects.md'
+        regex: 'readme-snippets/3-create-prereq-objects.md'
         rewriteTo: "'README.md'"
       - type: RewritePath
         regex: 'readme-snippets/install-tap.md'
