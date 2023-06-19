@@ -143,4 +143,14 @@ appliveview:
 package_overlays:
 - name: tap-gui
   secrets:
-  - tap-gui-techdocs-overlay
+  - name: tap-gui-techdocs-overlay
+- name: contour
+  secrets:
+  - name: contour-ipv4-overlay
+- name: ootb-templates
+  secrets:
+  - name: git-private-ca-overlay
+  - name: multi-registry-cdt-overlay
+  - name: tbs-source-commit-tag-addition-overlay
+  - name: tkgi-prisma-remove-labels-overlay
+  - name: source-details-annotations-overlay

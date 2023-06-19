@@ -1,80 +1,3 @@
-apiVersion: carto.run/v1alpha1
-kind: ClusterConfigTemplate
-metadata:
-  name: config-template
-spec:
-  ytt: |-
-    #@ load("@ytt:data", "data")
-    #@ load("@ytt:yaml", "yaml")
-    #@ load("@ytt:overlay", "overlay")
-    #@ def merge_labels(fixed_values):
-    #@   labels = {}
-    #@   if hasattr(data.values.workload.metadata, "labels"):
-    #@     labels.update(data.values.workload.metadata.labels)
-    #@   end
-    #@   labels.update(fixed_values)
-    #@   return labels
-    #@ end
-
-    #@ def fix_permissions():
-    spec:
-      containers:
-      #@overlay/match by="name"
-      #@overlay/match-child-defaults missing_ok=True
-      - name: workload
-        securityContext:
-          #@ if hasattr(data.values.config.spec.containers[0],"securityContext"):
-          #@ if not hasattr(data.values.config.spec.containers[0].securityContext, "runAsGroup"):
-          runAsGroup: 1000
-          #@ end
-          #@ if hasattr(data.values.config.spec.containers[0].securityContext, "runAsUser"):
-          #@ if data.values.config.spec.containers[0].securityContext.runAsUser == 1000:
-          runAsUser: 1001
-          #@ end
-          #@ end
-          #@ end
-    #@ end
-
-    #@ def delivery():
-    apiVersion: serving.knative.dev/v1
-    kind: Service
-    metadata:
-      name: #@ data.values.workload.metadata.name
-      #! annotations NOT merged because knative annotations would be invalid here
-      annotations:
-        #@ if hasattr(data.values.workload.spec.source, "git"):
-        terasky.tap.tracability/git-repo: #@ data.values.workload.spec.source.git.url
-        terasky.tap.tracability/source-git-commit: #@ data.values.source.url.split("/")[-1].split(".")[0]
-        #@ if hasattr(data.values.workload.spec.source.git.ref, "branch"):
-        terasky.tap.tracability/git-branch: #@ data.values.workload.spec.source.git.ref.branch
-        #@ end
-        #@ if hasattr(data.values.workload.spec.source.git.ref, "tag"):
-        terasky.tap.tracability/git-tag: #@ data.values.workload.spec.source.git.ref.tag
-        #@ end
-        #@ end
-        #@ if hasattr(data.values.workload.spec.source, "subPath"):
-        terasky.tap.tracability/sub-path: #@ data.values.workload.spec.source.subPath
-        #@ end
-        #@ if hasattr(data.values.workload.spec.source, "image"):
-        terasky.tap.tracability/source-image: #@ data.values.workload.spec.source.image
-        terasky.tap.tracability/source-image-sha: #@ "sha256:{}".format(data.values.source.url.split("/")[-1].split(".")[0])
-        #@ end
-        ootb.apps.tanzu.vmware.com/servicebinding-workload: "true"
-        ootb.apps.tanzu.vmware.com/apidescriptor-ref: "true"
-        kapp.k14s.io/change-rule: "upsert after upserting servicebinding.io/ServiceBindings"
-      labels: #@ merge_labels({ "app.kubernetes.io/component": "run", "carto.run/workload-name": data.values.workload.metadata.name })
-    spec:
-      template: #@ overlay.apply(data.values.config,fix_permissions())
-    #@ end
-
-    ---
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: #@ data.values.workload.metadata.name
-      labels: #@ merge_labels({ "app.kubernetes.io/component": "config" })
-    data:
-      delivery.yml: #@ yaml.encode(delivery())
 ---
 apiVersion: v1
 kind: Secret
@@ -86,6 +9,13 @@ stringData:
   git-private-ca-overlay.yaml: |
     #@ load("@ytt:data", "data")
     #@ load("@ytt:overlay","overlay")
+    
+    #@ def config_template_matcher():
+    apiVersion: carto.run/v1alpha1
+    kind: ClusterConfigTemplate
+    metadata:
+      name: config-template
+    #@ end
 
     #@ def config_writer_template_matcher():
     apiVersion: carto.run/v1alpha1
@@ -100,6 +30,83 @@ stringData:
     metadata:
       name: git-writer
     #@ end
+    
+    #@overlay/match by=overlay.subset(config_template_matcher())
+    ---
+    #@overlay/match-child-defaults missing_ok=True
+    spec:
+      ytt: |-
+        #@ load("@ytt:data", "data")
+        #@ load("@ytt:yaml", "yaml")
+        #@ load("@ytt:overlay", "overlay")
+        #@ def merge_labels(fixed_values):
+        #@   labels = {}
+        #@   if hasattr(data.values.workload.metadata, "labels"):
+        #@     labels.update(data.values.workload.metadata.labels)
+        #@   end
+        #@   labels.update(fixed_values)
+        #@   return labels
+        #@ end
+    
+        #@ def fix_permissions():
+        spec:
+          containers:
+          #@overlay/match by="name"
+          #@overlay/match-child-defaults missing_ok=True
+          - name: workload
+            securityContext:
+              #@ if hasattr(data.values.config.spec.containers[0],"securityContext"):
+              #@ if not hasattr(data.values.config.spec.containers[0].securityContext, "runAsGroup"):
+              runAsGroup: 1000
+              #@ end
+              #@ if hasattr(data.values.config.spec.containers[0].securityContext, "runAsUser"):
+              #@ if data.values.config.spec.containers[0].securityContext.runAsUser == 1000:
+              runAsUser: 1001
+              #@ end
+              #@ end
+              #@ end
+        #@ end
+    
+        #@ def delivery():
+        apiVersion: serving.knative.dev/v1
+        kind: Service
+        metadata:
+          name: #@ data.values.workload.metadata.name
+          #! annotations NOT merged because knative annotations would be invalid here
+          annotations:
+            #@ if hasattr(data.values.workload.spec.source, "git"):
+            terasky.tap.tracability/git-repo: #@ data.values.workload.spec.source.git.url
+            terasky.tap.tracability/source-git-commit: #@ data.values.source.url.split("/")[-1].split(".")[0]
+            #@ if hasattr(data.values.workload.spec.source.git.ref, "branch"):
+            terasky.tap.tracability/git-branch: #@ data.values.workload.spec.source.git.ref.branch
+            #@ end
+            #@ if hasattr(data.values.workload.spec.source.git.ref, "tag"):
+            terasky.tap.tracability/git-tag: #@ data.values.workload.spec.source.git.ref.tag
+            #@ end
+            #@ end
+            #@ if hasattr(data.values.workload.spec.source, "subPath"):
+            terasky.tap.tracability/sub-path: #@ data.values.workload.spec.source.subPath
+            #@ end
+            #@ if hasattr(data.values.workload.spec.source, "image"):
+            terasky.tap.tracability/source-image: #@ data.values.workload.spec.source.image
+            terasky.tap.tracability/source-image-sha: #@ "sha256:{}".format(data.values.source.url.split("/")[-1].split(".")[0])
+            #@ end
+            ootb.apps.tanzu.vmware.com/servicebinding-workload: "true"
+            ootb.apps.tanzu.vmware.com/apidescriptor-ref: "true"
+            kapp.k14s.io/change-rule: "upsert after upserting servicebinding.io/ServiceBindings"
+          labels: #@ merge_labels({ "app.kubernetes.io/component": "run", "carto.run/workload-name": data.values.workload.metadata.name })
+        spec:
+          template: #@ overlay.apply(data.values.config,fix_permissions())
+        #@ end
+    
+        ---
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+          name: #@ data.values.workload.metadata.name
+          labels: #@ merge_labels({ "app.kubernetes.io/component": "config" })
+        data:
+          delivery.yml: #@ yaml.encode(delivery())
 
     #@overlay/match by=overlay.subset(config_writer_template_matcher())
     ---
