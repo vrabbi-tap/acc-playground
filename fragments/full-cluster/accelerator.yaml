@@ -204,7 +204,7 @@ engine:
       - type: OpenRewriteRecipe
         recipe: org.openrewrite.yaml.DeleteKey
         options:
-          keyPath: '"$.package_overlays[?(@.name == \"contour\"]"'
+          keyPath: "'$.package_overlays[?(@.name == \'contour\' + ]'"
 
     - include: ["scanner/prisma-creds.yaml","scanner/prisma-pkgr.yaml"]
       condition: "#fullClusterConfig['sourceScanner'] == 'prisma'" 
