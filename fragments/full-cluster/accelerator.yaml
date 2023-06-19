@@ -296,7 +296,7 @@ engine:
     - include: ["**/*.md"]
       chain:
       - type: RewritePath
-        regex: '**/*.md'
+        regex: '.*.md'
         rewriteTo: "'README.md'"
       - type: UniquePath
         strategy: Append
