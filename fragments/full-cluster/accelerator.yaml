@@ -300,9 +300,34 @@ engine:
         regex: 'readme-snippets/cosign.md'
         rewriteTo: "'README.md'"
       - type: RewritePath
-        condition: "#fullClusterConfig['enableSCG']"
-        regex: 'readme-snippets/scg.md'
+        regex: 'readme-snippets/generate-files.md'
         rewriteTo: "'README.md'"
+      - type: RewritePath
+        regex: 'readme-snippets/relocate-images.md'
+        rewriteTo: "'README.md'"
+      - type: RewritePath
+        regex: 'readme-snippets/create-prereq-objects.md'
+        rewriteTo: "'README.md'"
+      - type: RewritePath
+        regex: 'readme-snippets/install-tap.md'
+        rewriteTo: "'README.md'"
+      - type: RewritePath
+        condition: "#fullClusterConfig['imageScanner'] == 'snyk'"
+        regex: 'readme-snippets/snyk.md'
+        rewriteTo: "'README.md'"
+      - type: RewritePath
+        condition: "#fullClusterConfig['imageScanner'] == 'cbc'"
+        regex: 'readme-snippets/cbc.md'
+        rewriteTo: "'README.md'"
+      - type: RewritePath
+        condition: "#fullClusterConfig['sourceScanner'] == 'prisma' or #fullClusterConfig['imageScanner'] == 'prisma'"
+        regex: 'readme-snippets/prisma.md'
+        rewriteTo: "'README.md'"
+      - type: RewritePath
+        condition: "#fullClusterConfig['sourceScanner'] == 'trivy' or #fullClusterConfig['imageScanner'] == 'trivy'"
+        regex: 'readme-snippets/trivy.md'
+        rewriteTo: "'README.md'"
+      
       - type: UniquePath
         strategy: Append
       
