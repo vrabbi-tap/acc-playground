@@ -1,3 +1,5 @@
+#@ load("@ytt:data", "data")
+---
 profile: full
 ceip_policy_disclosed: true
 
