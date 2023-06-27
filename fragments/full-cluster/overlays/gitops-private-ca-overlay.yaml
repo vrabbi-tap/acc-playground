@@ -3,6 +3,8 @@ kind: Secret
 metadata:
   name: git-private-ca-overlay
   namespace: tap-install
+  annotations:
+    package-to-overlay: "ootb-templates"
 type: Opaque
 stringData:
   git-private-ca-overlay.yaml: |

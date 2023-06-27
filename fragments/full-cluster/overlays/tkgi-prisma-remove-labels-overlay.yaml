@@ -3,6 +3,8 @@ kind: Secret
 metadata:
   name: tkgi-prisma-remove-labels-overlay
   namespace: tap-install
+  annotations:
+    package-to-overlay: "ootb-templates"
 type: Opaque
 stringData:
   tkgi-prisma-remove-labels-overlay.yaml: |

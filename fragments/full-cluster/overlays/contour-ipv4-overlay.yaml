@@ -3,6 +3,8 @@ kind: Secret
 metadata:
   name: contour-ipv4-overlay
   namespace: tap-install
+  annotations:
+    package-to-overlay: "contour"
 stringData:
   ipv4-overlay.yaml: |
    #@ load("@ytt:overlay", "overlay")

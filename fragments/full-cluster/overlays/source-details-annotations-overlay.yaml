@@ -4,6 +4,8 @@ kind: Secret
 metadata:
   name: source-details-annotations-overlay
   namespace: tap-install
+  annotations:
+    package-to-overlay: "ootb-templates"
 type: Opaque
 stringData:
   git-private-ca-overlay.yaml: |

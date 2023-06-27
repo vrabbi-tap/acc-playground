@@ -3,6 +3,8 @@ kind: Secret
 metadata:
   name: tbs-source-commit-tag-addition-overlay
   namespace: tap-install
+  annotations:
+    package-to-overlay: "ootb-templates"
 stringData:
   tbs-source-commit-tag-addition-overlay.yaml: |
     #@ load("@ytt:overlay","overlay")

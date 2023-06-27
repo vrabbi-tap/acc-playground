@@ -3,6 +3,8 @@ kind: Secret
 metadata:
   name: multi-registry-cdt-overlay
   namespace: tap-install
+  annotations:
+    package-to-overlay: "ootb-templates"
 stringData:
   multi-registry-cdt-overlay.yaml: |
     #@ load("@ytt:overlay","overlay")
@@ -85,27 +87,3 @@ stringData:
             - kbld: {}
           deploy:
             - kapp: {}
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: multi-registry-cd-overlay
-  namespace: tap-install
-stringData:
-  multi-registry-cd-overlay.yaml: |
-    #@ load("@ytt:overlay","overlay")
-    #@ def cd_matcher():
-    apiVersion: carto.run/v1alpha1
-    kind: ClusterDelivery
-    metadata:
-      name: delivery-basic
-    #@ end
-    #@overlay/match by=overlay.subset(cd_matcher())
-    ---
-    spec:
-      #@overlay/match missing_ok=True
-      params:
-      - name: registry_change
-        default:
-          origin: OLD_REGISTRY_PLACEHOLDER
-          pullFrom: NEW_REGISTRY_PLACEHOLDER
